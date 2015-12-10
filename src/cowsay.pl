@@ -24,15 +24,25 @@ sub cmd_cowsay {
         Irssi::print("Not connected to server");
         return;
     }
-    if ($data && $witem && $data eq "fortune") {
+    if ($witem) {
         # there's query/channel active in window
+        my $r_v = -1;
+        my @output;
         if($data eq "fortune"){
-            $output = qx{fortune|cowsay};
+            @output = qx{fortune|cowsay};
+            $r_v = $?;
         } else {
-            $output = qx{cowsay $data};
+            @output = qx{cowsay $data};
+            $r_v = $?;
         }
-        # TODO: Handle errors with commands cowsay and fortune
-        $witem->command("MSG ".$witem->{name}." ".$output);
+        # Handle errors with commands cowsay and fortune
+        if($r_v == -1) {
+            Irssi::print("Cowsay and/or Fortune command(s) not available for irssi");
+        }
+        for my $el (@output)
+        {
+            $witem->command("MSG ".$witem->{name}." ".$el);
+        }
     } else {
         Irssi::print("No active channel/query in window");
     }
