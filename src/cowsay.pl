@@ -1,7 +1,10 @@
 use strict;
 use vars qw($VERSION %IRSSI);
 
+use Getopt::Mixed;
 use Irssi;
+
+Getopt::Mixed::init( 'f:s');
 $VERSION = '1.00';
 %IRSSI = (
     authors     =>  'Mr. T. Kärkäs',
@@ -12,6 +15,7 @@ $VERSION = '1.00';
                     'through cowsay.',
     license     =>  'Public Domain',
 );
+my $animal = "default";
 
 # Usage: /COWSAY [<msg>|fortune]
 sub cmd_cowsay {
@@ -32,7 +36,8 @@ sub cmd_cowsay {
             @output = qx{fortune|cowsay};
             $r_v = $?;
         } else {
-            @output = qx{cowsay $data};
+            # Someone'll kill me for this, but quotes don't prevent -f injections in the command so... through echo we go
+            @output = qx{echo "$data"|cowsay};
             $r_v = $?;
         }
         # Handle errors with commands cowsay and fortune
@@ -47,4 +52,17 @@ sub cmd_cowsay {
         Irssi::print("No active channel/query in window");
     }
 }
+
+while( my( $option, $value, $pretty ) = Getopt::Mixed::nextOption() ) {
+    OPTION: {
+      $option eq 'f' and do {
+        $animal = $value;
+
+        last OPTION;
+      };
+      # ...
+    }
+}
+Getopt::Mixed::cleanup();
+
 Irssi::command_bind('cowsay', 'cmd_cowsay');
