@@ -1,3 +1,5 @@
+# Depends: LibGetopt Mixed
+
 use strict;
 use vars qw($VERSION %IRSSI);
 
@@ -16,6 +18,7 @@ $VERSION = '1.00';
     license     =>  'Public Domain',
 );
 my $animal = "default";
+@animals = ["apt", "beavis.zen", "bong", "bud-frogs", "bunny", "calvin", "cheese", "cock", "cower", "daemon", "default", "dragon", "dragon-and-cow", "duck", "elephant", "elephant-in-snake", "eyes", "flaming-sheep", "ghostbusters", "gnu", "head-in", "hellokitty", "kiss", "kitty", "koala", "kosh", "luke-koala", "mech-and-cow", "meow", "milk", "moofasa", "moose", "mutilated", "pony", "pony-smaller", "ren", "sheep", "skeleton", "snowman", "sodomized-sheep", "stegosaurus", "stimpy", "suse", "three-eyes", "turkey", "turtle", "tux", "unipony", "unipony-smaller", "vader", "vader-koala", "www"];
 
 # Usage: /COWSAY [<msg>|fortune]
 sub cmd_cowsay {
@@ -29,15 +32,15 @@ sub cmd_cowsay {
         return;
     }
     if ($witem) {
-        # there's query/channel active in window
+        # theres query/channel active in window
         my $r_v = -1;
         my @output;
         if($data eq "fortune"){
-            @output = qx{fortune|cowsay};
+            @output = qx{fortune|cowsay -f "$animal"};
             $r_v = $?;
         } else {
             # Someone'll kill me for this, but quotes don't prevent -f injections in the command so... through echo we go
-            @output = qx{echo "$data"|cowsay};
+            @output = qx{echo "$data"|cowsay -f "$animal"};
             $r_v = $?;
         }
         # Handle errors with commands cowsay and fortune
@@ -55,7 +58,7 @@ sub cmd_cowsay {
 
 while( my( $option, $value, $pretty ) = Getopt::Mixed::nextOption() ) {
     OPTION: {
-      $option eq 'f' and do {
+      $option eq 'f' and $option in @animals do {
         $animal = $value;
 
         last OPTION;
@@ -66,3 +69,4 @@ while( my( $option, $value, $pretty ) = Getopt::Mixed::nextOption() ) {
 Getopt::Mixed::cleanup();
 
 Irssi::command_bind('cowsay', 'cmd_cowsay');
+
