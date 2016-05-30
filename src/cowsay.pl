@@ -54,24 +54,27 @@ sub cmd_cowsay {
         # theres query/channel active in window
         my $r_v = -1;
         my @output;
-        if($data eq "fortune"){
-            @output = qx{fortune|cowsay -f "$animal"};
-            $r_v = $?;
-        } else {
-            # Parse other text, outside of options...
-            my $inputText = join(' ', @$args);
+        
+        # Parse other text, outside of options...
+        my $inputText = join(' ', @$args);
 
+        if($inputText eq "fortune"){
+            @output = qx{fortune|cowsay -f "$animal"};
+        } else {
             @output = qx{echo "$inputText"|cowsay -f "$animal"};
-            $r_v = $?;
         }
+        $r_v = $?;
+        
         # Handle errors with commands cowsay and fortune
         if($r_v == -1) {
             Irssi::print("Cowsay and/or Fortune command(s) not available for irssi");
         }
+        
         for my $el (@output)
         {
             $witem->command("MSG ".$witem->{name}." ".$el);
         }
+
     } else {
         Irssi::print("No active channel/query in window");
     }
