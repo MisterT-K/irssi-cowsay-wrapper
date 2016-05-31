@@ -10,5 +10,5 @@ clean:
 
 
 install: all
-	mkdir -p $(INSTALL_DIR)
+	install -d $(INSTALL_DIR)
 	install $(BUILD_DIR)cowsay.pl $(INSTALL_DIR)
