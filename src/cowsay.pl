@@ -60,7 +60,7 @@ sub cmd_cowsay {
     # Parse arguments to irssi command
 
     ($ret, $args) = GetOptionsFromString(
-        $data, 
+        quotemeta $data, 
         "f:s"       => \$animalCandidate,
         "fortune"   => \$fortune,
         "list"      => \$list
@@ -99,6 +99,7 @@ sub cmd_cowsay {
 
             # Output rest of the unhandled parameters as the output string
             my $inputText = join(' ', @$args);
+            $inputText =~ s/\$/\\\$/g;
             @output = qx{echo "$inputText"|cowsay -f "$animal"};
 
         }
