@@ -56,7 +56,7 @@ sub cmd_cowsay {
         return;
     }
     
-    # Parse metacharacter out of data (outside of whitespace)
+    # Parse metacharacters out of data var (quotemeta did not work well with whitespace as it broke argument tokenization in GetOptionsFromString)
     $data =~ s/([^A-Za-z _0-9])/\\$1/g;
 
     # There's query/channel active in window
@@ -102,10 +102,9 @@ sub cmd_cowsay {
 
             # Output rest of the unhandled parameters as the output string
             my $inputText = join(' ', @$args);
-            # Some special character handling for perl shell execution. TODO: improve
-            $inputText =~ s/\$/\\\$/g;
-            $inputText =~ s/\"/\\\"/g;
-            @output = qx{echo "$inputText"|cowsay -f "$animal"};
+            # Some special character handling for perl shell execution. Single quotes handled with "glue"
+            $inputText =~ s/'/'"'"'/g;
+            @output = qx{echo '$inputText'|cowsay -f $animal};
 
         }
 
