@@ -11,4 +11,4 @@ clean:
 
 install: all
 	mkdir -p $(INSTALL_DIR)
-	cp $(BUILD_DIR)cowsay.pl $(INSTALL_DIR)
+	install $(BUILD_DIR)cowsay.pl $(INSTALL_DIR)
