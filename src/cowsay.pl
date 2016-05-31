@@ -1,5 +1,6 @@
+# Cowsay irssi wrapper with fortune command
+# Usage: /COWSAY [--list]|[--fortune  [-f animal] | [-f animal] <msg>]
 # Depends: LibGetopt Long
-
 use strict;
 use vars qw($VERSION %IRSSI);
 
@@ -19,8 +20,10 @@ $VERSION = '1.00';
     license     =>  'Public Domain',
 );
 
-#Animal candidate hash list
+# Animal variant.
+my $animal = "default";
 
+# Animal candidate hash list
 my %animals;
 
 # Fill in animal options to hash for search purposes.
@@ -29,14 +32,13 @@ foreach("apt", "beavis.zen", "bong", "bud-frogs", "bunny", "calvin", "cheese", "
     $animals{$_} = 1;
 }
 
-# Usage: /COWSAY [--fortune  [-f animal] | [-f animal] <msg>] . See cowsay -l for animal list
+# Cowsay command for irssi, bound later
 sub cmd_cowsay {
     # data - contains the parameters for /COWSAY
     # server - the active server in window
     # witem - the active window item (eg. channel, query)
     #         or undef if the window is empty
     my ($data, $server, $witem) = @_;
-    my $animal = "default";
     my $animalCandidate = '';
     my $fortune = 0;
     my $ret;
