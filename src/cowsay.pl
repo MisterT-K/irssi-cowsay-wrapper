@@ -17,7 +17,7 @@ $VERSION = '1.00';
     description =>  'This script allows ' .
                     'you to express yourself ' .
                     'through cowsay.',
-    license     =>  'Public Domain',
+    license     =>  'Creative Commons Attribution 4.0 International (CC BY 4.0)',
 );
 
 # Animal variant.
