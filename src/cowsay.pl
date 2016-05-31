@@ -56,11 +56,14 @@ sub cmd_cowsay {
         return;
     }
     
+    # Parse metacharacter out of data (outside of whitespace)
+    $data =~ s/([^A-Za-z _0-9])/\\$1/g;
+
     # There's query/channel active in window
     # Parse arguments to irssi command
 
     ($ret, $args) = GetOptionsFromString(
-        quotemeta $data, 
+        $data,
         "f:s"       => \$animalCandidate,
         "fortune"   => \$fortune,
         "list"      => \$list
@@ -99,7 +102,9 @@ sub cmd_cowsay {
 
             # Output rest of the unhandled parameters as the output string
             my $inputText = join(' ', @$args);
+            # Some special character handling for perl shell execution. TODO: improve
             $inputText =~ s/\$/\\\$/g;
+            $inputText =~ s/\"/\\\"/g;
             @output = qx{echo "$inputText"|cowsay -f "$animal"};
 
         }
