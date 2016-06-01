@@ -1,5 +1,16 @@
 # irssi-cowsay-fortune
 
+
+ _________________________________
+< I'm the most popular cow in IRC >
+ ---------------------------------
+        \   ^__^
+         \  (oo)\_______
+            (__)\       )\/\
+                ||----w |
+                ||     ||
+
+
 Cowsay and fortune command wrapper for irssi IRC client. Improves the quality of one's life in IRC considerably.
 
 Full disclosure: Personal project merely meant for giggles, serves also as an entry point for the author to PERL scripting. It should be somewhat indicative that the code quality isn't all-time high. 
