@@ -8,6 +8,7 @@ Feel free to contribute.
 
 ## Dependencies
 
+perl + getopt
 cowsay and fortune shell commands.
 
 ## Installation
